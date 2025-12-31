@@ -32,13 +32,13 @@
 
 - [ ] 2.5 Create article data models and validation
   - Define TypeScript interfaces for Article and Reference models
-  - Implement data validation functions for article fields
+  - Implement data validation functions using Zod schemas for article fields
   - Create database access layer with proper error handling
   - _Requirements: 1.3, 1.4_
 
 - [ ]* 2.6 Write unit tests for scraper and data models
   - Create unit tests for scraper functions with mock HTML
-  - Write unit tests for data validation and database operations
+  - Write unit tests for data validation using Zod schemas and database operations
   - Test error handling scenarios and edge cases
   - _Requirements: 1.1, 1.2, 1.3_
 
@@ -46,7 +46,7 @@
 - [ ] 3.1 Create Express.js API server with routing
   - Set up Express server with middleware for CORS, JSON parsing, and error handling
   - Implement RESTful routes for articles (GET, POST, PUT, DELETE)
-  - Add request validation and sanitization middleware
+  - Add request validation and sanitization middleware using Zod schemas
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
 
 - [ ]* 3.2 Write property test for CRUD operations
@@ -64,7 +64,7 @@
 - [ ]* 3.4 Write unit tests for API endpoints
   - Test each endpoint with valid and invalid requests
   - Test error scenarios and edge cases
-  - Test request validation and response formats
+  - Test request validation using Zod schemas and response formats
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
 
 - [ ] 4. Checkpoint - Ensure Phase 1 functionality is working

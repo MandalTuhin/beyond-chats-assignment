@@ -254,14 +254,14 @@ The system employs a dual testing approach combining unit tests and property-bas
 
 ### Data Protection
 - Sanitize all scraped content to prevent XSS attacks
-- Implement proper input validation for all API endpoints
+- Implement proper input validation for all API endpoints using Zod schemas
 - Use parameterized queries to prevent SQL injection
 - Encrypt sensitive configuration data and API keys
 
 ### External Service Security
 - Implement secure API key management
 - Use HTTPS for all external communications
-- Validate and sanitize all external content
+- Validate and sanitize all external content using Zod schemas
 - Implement proper CORS policies for frontend API access
 
 ### Rate Limiting and Abuse Prevention

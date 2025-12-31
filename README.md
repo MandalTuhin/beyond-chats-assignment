@@ -8,7 +8,7 @@ The system is built as a monorepo with three main components:
 
 - **Backend** (`/backend`): Node.js/Express API server with web scraping and AI integration
 - **Frontend** (`/frontend`): React-based responsive web interface
-- **Shared** (`/shared`): Common utilities, types, and validation logic
+- **Shared** (`/shared`): Common utilities, types, and Zod validation schemas
 
 ## 🚀 Quick Start
 
@@ -89,7 +89,7 @@ beyondchats-article-system/
 │   ├── src/
 │   │   ├── types/           # Common types
 │   │   ├── utils/           # Utility functions
-│   │   └── validation/      # Data validation
+│   │   └── validation/      # Zod schemas for data validation
 │   └── package.json
 ├── database/
 │   └── init/                # Database initialization scripts
