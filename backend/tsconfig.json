@@ -20,7 +20,6 @@
     "noImplicitThis": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["node", "jest"],
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
