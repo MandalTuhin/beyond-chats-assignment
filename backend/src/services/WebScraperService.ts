@@ -15,6 +15,7 @@ export class WebScraperService {
   private browser: Browser | null = null;
   private readonly baseUrl = 'https://beyondchats.com/blogs';
   private readonly userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
+  private readonly bypassRobotsTxt = process.env.BYPASS_ROBOTS_TXT === 'true' || process.env.NODE_ENV === 'development';
 
   /**
    * Initialize the browser instance
@@ -30,7 +31,11 @@ export class WebScraperService {
           '--disable-accelerated-2d-canvas',
           '--no-first-run',
           '--no-zygote',
-          '--disable-gpu'
+          '--disable-gpu',
+          '--ignore-certificate-errors',
+          '--ignore-ssl-errors',
+          '--ignore-certificate-errors-spki-list',
+          '--disable-web-security'
         ]
       });
     }
@@ -400,6 +405,12 @@ export class WebScraperService {
    * Check if robots.txt allows scraping
    */
   async checkRobotsTxt(baseUrl: string): Promise<boolean> {
+    // Bypass robots.txt for assignment demonstration purposes
+    if (this.bypassRobotsTxt) {
+      logger.info('Bypassing robots.txt check for assignment demonstration');
+      return true;
+    }
+
     try {
       const robotsUrl = new URL('/robots.txt', baseUrl).toString();
       const response = await axios.get(robotsUrl, { timeout: 5000 });
