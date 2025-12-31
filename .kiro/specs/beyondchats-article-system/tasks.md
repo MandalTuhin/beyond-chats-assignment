@@ -8,8 +8,8 @@
   - Set up Git repository with proper .gitignore and initial commit
   - _Requirements: 6.4, 6.5_
 
-- [ ] 2. Implement Phase 1: Web Scraping and Database Setup
-- [ ] 2.1 Set up MySQL database and schema
+- [-] 2. Implement Phase 1: Web Scraping and Database Setup
+- [x] 2.1 Set up MySQL database and schema
   - Create MySQL database with articles table and proper indexes
   - Implement database connection utilities with connection pooling
   - Create database migration scripts for schema management
@@ -19,7 +19,7 @@
   - **Property 2: Database storage round-trip consistency**
   - **Validates: Requirements 1.4, 1.5**
 
-- [ ] 2.3 Implement web scraper for BeyondChats blog
+- [-] 2.3 Implement web scraper for BeyondChats blog
   - Create scraper service using Puppeteer or Cheerio
   - Implement navigation to last page of BeyondChats blog
   - Extract 5 oldest articles with title, content, URL, and date
@@ -30,7 +30,7 @@
   - **Property 1: Article scraping completeness**
   - **Validates: Requirements 1.2, 1.3**
 
-- [ ] 2.5 Create article data models and validation
+- [x] 2.5 Create article data models and validation
   - Define TypeScript interfaces for Article and Reference models
   - Implement data validation functions using Zod schemas for article fields
   - Create database access layer with proper error handling
