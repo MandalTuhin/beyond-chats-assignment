@@ -45,12 +45,21 @@ const getExecutedMigrations = async (): Promise<string[]> => {
  */
 const executeMigration = async (migration: Migration): Promise<void> => {
   await executeTransaction(async (connection) => {
-    // Execute the migration SQL
-    const statements = migration.sql.split(';').filter(stmt => stmt.trim());
+    // Split SQL into individual statements and filter out comments and empty lines
+    const statements = migration.sql
+      .split(';')
+      .map(stmt => stmt.trim())
+      .filter(stmt => stmt && !stmt.startsWith('--') && stmt !== '');
     
     for (const statement of statements) {
       if (statement.trim()) {
-        await connection.execute(statement);
+        try {
+          await connection.execute(statement);
+        } catch (error: any) {
+          // Log the problematic statement for debugging
+          logger.error(`Failed to execute statement: ${statement.substring(0, 100)}...`, error);
+          throw error;
+        }
       }
     }
     
