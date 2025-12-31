@@ -19,7 +19,7 @@
   - **Property 2: Database storage round-trip consistency**
   - **Validates: Requirements 1.4, 1.5**
 
-- [-] 2.3 Implement web scraper for BeyondChats blog
+- [x] 2.3 Implement web scraper for BeyondChats blog
   - Create scraper service using Puppeteer or Cheerio
   - Implement navigation to last page of BeyondChats blog
   - Extract 5 oldest articles with title, content, URL, and date

@@ -44,7 +44,7 @@ export const ArticleSchema = z.object({
     .max(1000000, 'Content is too long'),
   url: z.string()
     .url('Invalid URL format')
-    .max(1000, 'URL must be less than 1000 characters'),
+    .max(500, 'URL must be less than 500 characters'),
   scrapedDate: z.date().optional(),
   enhancedContent: z.string()
     .max(1000000, 'Enhanced content is too long')
@@ -68,7 +68,7 @@ export const CreateArticleSchema = z.object({
     .max(1000000, 'Content is too long'),
   url: z.string()
     .url('Invalid URL format')
-    .max(1000, 'URL must be less than 1000 characters'),
+    .max(500, 'URL must be less than 500 characters'),
   tags: z.array(z.string().trim().min(1)).default([]),
 });
 

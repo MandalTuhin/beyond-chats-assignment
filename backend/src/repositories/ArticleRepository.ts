@@ -213,7 +213,7 @@ export class ArticleRepository {
   async count(): Promise<number> {
     try {
       const query = 'SELECT COUNT(*) as count FROM articles';
-      const results = await executeQuery<RowDataPacket[]>(query);
+      const results = await executeQuery<RowDataPacket[]>(query, []);
       
       return results[0].count;
     } catch (error) {
@@ -231,7 +231,7 @@ export class ArticleRepository {
         SELECT id, title, content, url, scraped_date, enhanced_content, 
                is_enhanced, word_count, reading_time, tags, created_at, updated_at
         FROM articles 
-        WHERE is_enhanced = FALSE
+        WHERE is_enhanced = 0
         ORDER BY created_at ASC
         LIMIT ?
       `;
