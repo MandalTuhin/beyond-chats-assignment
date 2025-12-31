@@ -9,6 +9,7 @@ import {
   sanitizeArticleContent
 } from '../models/Article';
 import { logger } from '../utils/logger';
+import { randomUUID } from 'crypto';
 
 export class ArticleRepository {
   /**
@@ -21,12 +22,16 @@ export class ArticleRepository {
       const wordCount = calculateWordCount(sanitizedContent);
       const readingTime = calculateReadingTime(wordCount);
 
+      // Generate UUID for the article
+      const articleId = randomUUID();
+
       const query = `
-        INSERT INTO articles (title, content, url, word_count, reading_time, tags)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO articles (id, title, content, url, word_count, reading_time, tags)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
       `;
 
       const params = [
+        articleId,
         data.title.trim(),
         sanitizedContent,
         data.url,
@@ -37,12 +42,12 @@ export class ArticleRepository {
 
       const result = await executeQuery<ResultSetHeader>(query, params);
       
-      if (!result.insertId) {
-        throw new Error('Failed to create article - no ID returned');
+      if (result.affectedRows === 0) {
+        throw new Error('Failed to create article - no rows affected');
       }
 
       // Fetch the created article
-      const createdArticle = await this.findById(result.insertId.toString());
+      const createdArticle = await this.findById(articleId);
       if (!createdArticle) {
         throw new Error('Failed to retrieve created article');
       }
@@ -118,7 +123,7 @@ export class ArticleRepository {
         LIMIT ? OFFSET ?
       `;
 
-      const results = await executeQuery<RowDataPacket[]>(query, [limit, offset]);
+      const results = await executeQuery<RowDataPacket[]>(query, [Number(limit), Number(offset)]);
       
       return results.map(row => this.mapRowToArticle(row));
     } catch (error) {
@@ -249,6 +254,31 @@ export class ArticleRepository {
    * Map database row to Article object
    */
   private mapRowToArticle(row: RowDataPacket): Article {
+    let tags: string[] = [];
+    
+    if (row.tags) {
+      try {
+        // If it's already an array (MySQL JSON type), use it directly
+        if (Array.isArray(row.tags)) {
+          tags = row.tags;
+        } else if (typeof row.tags === 'string') {
+          // Check if it looks like JSON
+          if (row.tags.startsWith('[') && row.tags.endsWith(']')) {
+            tags = JSON.parse(row.tags);
+          } else {
+            // Treat as comma-separated string
+            tags = row.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0);
+          }
+        } else {
+          // Convert to string and split
+          tags = String(row.tags).split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0);
+        }
+      } catch (error) {
+        logger.warn(`Error parsing tags for article ${row.id}, using empty array:`, error);
+        tags = [];
+      }
+    }
+
     return {
       id: row.id,
       title: row.title,
@@ -259,7 +289,7 @@ export class ArticleRepository {
       isEnhanced: Boolean(row.is_enhanced),
       wordCount: row.word_count,
       readingTime: row.reading_time,
-      tags: row.tags ? JSON.parse(row.tags) : [],
+      tags: tags,
       createdAt: new Date(row.created_at),
       updatedAt: new Date(row.updated_at),
     };
